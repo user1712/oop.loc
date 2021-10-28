@@ -1,5 +1,6 @@
 <?php
 require 'class.php';
 $user = new User();
-$user->user_name = '32';
-print_r($user->login());
+$user->login = $user->string('23423123523@mail.ru');
+$user->password = $user->string('12345');
+echo $user->login();

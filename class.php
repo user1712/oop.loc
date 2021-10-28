@@ -11,11 +11,29 @@ class Db
 
 class User
 {
-    public $user_name;
+    public $login;
+    public $password;
+
+
+    /* Защита для SQL */
+    public function string($data) {
+        $data =  Db::dbconnect()->real_escape_string($data);
+        return $data;
+    }
+    /* Авторизация пользователя */
     public function login()
     {
-        $result = Db::dbconnect()->query("SELECT * FROM users WHERE id = '$this->user_name'");
+        $result = Db::dbconnect()->query("SELECT mail FROM users WHERE mail = '$this->login'");
         $result = $result->fetch_array(MYSQLI_ASSOC);
-        return $result;
+        if($result['mail'] == $this->login) {
+            $result = Db::dbconnect()->query("SELECT pass FROM users WHERE mail = '$this->login'");
+            $result = $result->fetch_array(MYSQLI_ASSOC);
+            if (password_verify($this->password, $result['pass'])) {
+                $_SESSION['auth'] = 1;
+                return 'Пароль правильный!';
+            } else {
+                return 'Пароль неправильный.';
+            }
+        } 
     }
 }
