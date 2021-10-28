@@ -9,7 +9,7 @@ class Db
     }
 }
 
-class User
+class auth
 {
     public $login;
     public $password;
